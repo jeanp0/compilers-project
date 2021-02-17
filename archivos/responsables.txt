@@ -1,0 +1,5 @@
+0956257497;jeanpier;mendoza;fisico
+0923876742;pilar;espinoza;ingeniera
+0927342393;andres;arroyo;diseniador
+0998776732;kaleb;chara;programador
+0992398612;yelena;lucas;matematica
