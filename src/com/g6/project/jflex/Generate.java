@@ -9,12 +9,12 @@ import java.io.File;
 
 /**
  *
- * @author jeanp
+ * @author grupo6
  */
 public class Generate {
 
     public static void main(String[] args) {
-        String ruta = "C:/Users/jeanp/Desktop/proyecto-compiladores/COMPILERS-PROJECT-G6/src/com/g6/project/jflex/Lexer.flex";
+        String ruta = "C:/Users/jeanp/Desktop/proyecto-compiladores/COMPILERS-PROJECT-G6-V.1.1/src/com/g6/project/jflex/Lexer.flex";
         generarLexer(ruta);
     }
 

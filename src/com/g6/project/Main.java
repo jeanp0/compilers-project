@@ -43,9 +43,9 @@ public class Main implements Serializable {
         Actividad actividad = new Actividad();
 //      Obra sin inicializar porque es una clase abstracta, será instanciada una vez se elija su tipo
         Obra obra;
-        String ingAct, codigo, nombre;
+        String ingAct, codigo, nombre, tempS;
         int op, j;
-        
+
         try {
             do {
 //          Menú principal del sistema, se pide una opción numérica para continuar con su funcionalidad respectiva
@@ -53,7 +53,7 @@ public class Main implements Serializable {
                 do {
                     System.out.print("\n\n1 => Registrar una nueva Obra.\n2 => Ingresar actividades.\n3 => Buscar obra por código."
                             + "\n4 => Buscar actividad por nombre.\n5 => Ver progreso de alguna Obra\n6 => Salir.\n\nIngrese el número de alguna opción: ");
-                    String tempS = scan.next();
+                    tempS = scan.next();
                     if (obraOP.validateWithLex(tempS, "NUMBER") == true) {
                         op = Integer.parseInt(tempS);
                         break;
@@ -71,7 +71,7 @@ public class Main implements Serializable {
                             System.out.println("\n1 => Civil \n2 => Edificacion\n3 => Medio Ambiente");
                             System.out.print("\nSelecciona un tipo de Obra: ");
 
-                            String tempS = scan.next();
+                            tempS = scan.next();
                             if (obraOP.validateWithLex(tempS, "NUMBER") == true) {
                                 j = Integer.parseInt(tempS);
                                 break;
@@ -118,8 +118,8 @@ public class Main implements Serializable {
                                 actividad.leerDatosActividad(scan, obra);
                                 actividad.asignarResponsable(scan);
                                 System.out.println(actividad.toString());
-                                actOP.guardar(actividad);
-                                actOP.agregarActividades();
+                                actOP.guardar(actividad); // lo guarda en el archivo 
+                                actOP.agregarActividades(); // lo guarda en la lista
                                 System.out.print("¿Desea ingresar otra actividad? (SI/NO): ");
                                 ingAct = scan.next();
                                 System.out.println();
@@ -131,9 +131,18 @@ public class Main implements Serializable {
 
 //              Buscar obra por código para mostrar todos sus datos
                     case 3:
+                        tempS = "";
                         if (obraOP.agregarObras() != null) {
-                            System.out.print("\nIngrese el código de la Obra a buscar: ");
-                            codigo = scan.next();
+                            do {
+                                System.out.print("\nIngrese el código de la Obra a buscar: ");
+                                tempS = scan.next();
+                                if (obraOP.validateWithLex(tempS, "ALPHANUM") == true) {
+                                    codigo = tempS;
+                                    break;
+                                } else {
+                                    System.out.println(ANSI_RED + "Por favor, ingrese un valor válido (alfanumérico)." + ANSI_RESET);
+                                }
+                            } while (true);
                             obraOP.mostrarObraFull(codigo);
                         } else {
                             System.out.println(ANSI_RED + "No hay obras registradas." + ANSI_RESET);
@@ -143,8 +152,16 @@ public class Main implements Serializable {
 //              Buscar actividad por su nombre para mostrar todos sus datos
                     case 4:
                         if (actOP.agregarActividades() != null) {
-                            System.out.print("\nIngrese el nombre de la Actividad a buscar: ");
-                            nombre = scan.next();
+                            do {
+                                System.out.print("\nIngrese el nombre de la Actividad a buscar: ");
+                                tempS = scan.next();
+                                if (obraOP.validateWithLex(tempS, "LETTER") == true) {
+                                    nombre = tempS;
+                                    break;
+                                } else {
+                                    System.out.println(ANSI_RED + "Por favor, ingrese un valor válido (alfabético)." + ANSI_RESET);
+                                }
+                            } while (true);
                             actOP.mostrarActividadFull(nombre);
                         } else {
                             System.out.println(ANSI_RED + "No hay actividades registradas." + ANSI_RESET);
@@ -154,7 +171,9 @@ public class Main implements Serializable {
 //              Ver informe de una obra por su código
                     case 5:
                         if (obraOP.agregarObras() != null) {
+                            // elige la obra por su código
                             obra = obraOP.elegirObra(scan);
+//                          // una vez obtenida la obra, se imprime su informe
                             obraOP.informeObra(obra);
                         } else {
                             System.out.println(ANSI_RED + "No hay obras registradas." + ANSI_RESET);

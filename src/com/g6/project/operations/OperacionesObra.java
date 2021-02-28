@@ -202,14 +202,12 @@ public class OperacionesObra implements IOperacionesObra, Serializable {
         Obra obra = null;
         int i = 0;
 
-        if (this.agregarObras() == null) {
-            System.out.println(ANSI_RED + "No existen obras registradas" + ANSI_RESET);
-        } else {
-            for (Map.Entry<String, Obra> entrada : this.agregarObras().entrySet()) {
-                if (entrada.getKey().equals(codigo)) {
-                    obra = entrada.getValue();
-                    break;
-                }
+        for (Map.Entry<String, Obra> entrada : this.agregarObras().entrySet()) {
+            if (entrada.getKey().equals(codigo)) {
+                obra = entrada.getValue();
+                break;
+            } else {
+                System.out.println(ANSI_RED + "No hay obras que conincida con ese código." + ANSI_RESET);
             }
         }
 
@@ -217,15 +215,11 @@ public class OperacionesObra implements IOperacionesObra, Serializable {
             System.out.println(obra.printFull());
         }
 
-        if (actOP.agregarActividades() == null) {
-            System.out.println("");
-        } else {
-            for (Map.Entry<String, Actividad> entrada : actOP.agregarActividades().entrySet()) {
-                if (entrada.getValue().getCod_obra().equals(codigo)) {
-                    System.out.println("\nActividad " + (i + 1) + ":");
-                    System.out.print(entrada.getValue());
-                    i++;
-                }
+        for (Map.Entry<String, Actividad> entrada : actOP.agregarActividades().entrySet()) {
+            if (entrada.getValue().getCod_obra().equals(codigo)) {
+                System.out.println("\nActividad " + (i + 1) + ":");
+                System.out.print(entrada.getValue());
+                i++;
             }
         }
 
@@ -247,7 +241,6 @@ public class OperacionesObra implements IOperacionesObra, Serializable {
     @Override
     public boolean validateWithLex(Object valueToEvaluate, String tokenName) {
         boolean isValid = false;
-
         // escribe un texto con la entrada
         File file = new File("inputFile.txt");
         PrintWriter writer;
@@ -258,15 +251,11 @@ public class OperacionesObra implements IOperacionesObra, Serializable {
         } catch (FileNotFoundException ex) {
             java.util.logging.Logger.getLogger("Test").log(Level.SEVERE, "BOOM!", ex);
         }
-
         // se lee el texto de la entrada con el analizador léxico
         try {
             Reader reader;
-
             reader = new BufferedReader(new FileReader("inputFile.txt"));
-
             Lexer lexer = new Lexer(reader);
-
             while (true) {
                 Tokens tokens = lexer.yylex();
 //                System.out.println(tokens);
@@ -279,7 +268,6 @@ public class OperacionesObra implements IOperacionesObra, Serializable {
                     }
                     break;
                 }
-
                 if ("LETTER".equals(tokenName)) {
                     if (tokens == LETTER) {
                         isValid = true;
@@ -289,7 +277,6 @@ public class OperacionesObra implements IOperacionesObra, Serializable {
                     }
                     break;
                 }
-
                 if ("ALPHANUM".equals(tokenName)) {
                     if (tokens == ALPHANUM) {
                         isValid = true;
@@ -299,26 +286,12 @@ public class OperacionesObra implements IOperacionesObra, Serializable {
                     }
                     break;
                 }
-
-//                if ("NUMBER".equals(tokenName) && tokens == NUMBER) {
-//                    System.out.println(valueToEvaluate.getClass());
-//                    isValid = true;
-//                }
-//
-//                if ("LETTER".equals(tokenName) && tokens == LETTER) {
-//                    isValid = true;
-//                }
-//
-//                if ("ALPHANUM".equals(tokenName) && tokens == ALPHANUM) {
-//                    isValid = true;
-//                }
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Obra.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Obra.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return isValid;
     }
 }

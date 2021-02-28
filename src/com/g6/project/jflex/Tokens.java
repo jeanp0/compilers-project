@@ -7,7 +7,7 @@ package com.g6.project.jflex;
 
 /**
  *
- * @author jeanp
+ * @author grupo6
  */
 public enum Tokens {
     NUMBER,
